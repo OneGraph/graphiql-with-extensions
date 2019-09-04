@@ -6,6 +6,12 @@ The original GraphiQL package is consumable as a single React component, even wi
 
 Usage is easy:
 
+```
+npm install --save graphiql-with-extensions
+# or
+yarn add graphiql-with-extensions
+```
+
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -40,4 +46,5 @@ Rigth now we only include the latest version of OneGraph's GraphiQL Explorer plu
 graphiql-with-extensions is licensed under the [MIT License](http://opensource.org/licenses/MIT).<br>
 graphiql is licensed under the [MIT License](http://opensource.org/licenses/MIT).<br>
 Documentation is licensed under [Creative Common License](http://creativecommons.org/licenses/by/4.0/).<br>
+
 # graphiql-with-extensions

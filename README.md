@@ -30,8 +30,8 @@ ReactDOM.render(
   <GraphiQL
     fetcher={graphQLFetcher}
     // Some optional props
-    defaultQuery={''}
-    disableExplorer={false}
+    // defaultQuery={''}
+    // disableExplorer={false}
   />,
   document.body,
 );

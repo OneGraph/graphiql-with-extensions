@@ -14,6 +14,8 @@ echo "Bundling graphiqlWithExtensions.js..."
 browserify -g browserify-shim -s GraphiQLWithExtensions dist/index.js > graphiqlWithExtensions.js
 echo "Bundling graphiqlWithExtensions.min.js..."
 browserify -g browserify-shim -t uglifyify -s GraphiQLWithExtensions dist/index.js | uglifyjs -c > graphiqlWithExtensions.min.js
+echo "Expose original css from GraphiQL(graphiql.css)"
+cp node_modules/graphiql/graphiql.css ./graphiqlWithExtensions.css
 # echo "Bundling graphiql.css..."
 # postcss --no-map --use autoprefixer -d dist/ css/*.css
 # cat dist/*.css > graphiql.css

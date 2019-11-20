@@ -88,7 +88,19 @@ class GraphiQLWithExtensions extends Component {
     el && el.scrollIntoView();
   };
 
-  _handleEditQuery = (query: string): void => this.setState({query});
+  _handleEditQuery = (query: string): void => {
+    this.setState({query});
+    if (this.props.onEditQuery) this.props.onEditQuery(query);
+  };
+
+  _handleEditVariables = variables => {
+    if (this.props.onEditVariables) this.props.onEditVariables(variables);
+  };
+
+  _handleEditOperationName = operation => {
+    if (this.props.onEditOperationName)
+      this.props.onEditOperationName(operation);
+  };
 
   _handleToggleExplorer = () => {
     this.setState({explorerIsOpen: !this.state.explorerIsOpen});
@@ -118,7 +130,9 @@ class GraphiQLWithExtensions extends Component {
           fetcher={this.props.fetcher}
           schema={schema}
           query={query}
-          onEditQuery={this._handleEditQuery}>
+          onEditQuery={this._handleEditQuery}
+          onEditVariables={this._handleEditVariables}
+          onEditOperationName={this._handleEditOperationName}>
           <GraphiQL.Toolbar>
             <GraphiQL.Button
               onClick={() => this._graphiql.handlePrettifyQuery()}

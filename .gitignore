@@ -23,6 +23,7 @@ yarn-error.log*
 dist/
 /graphiqlWithExtensions.js
 /graphiqlWithExtensions.min.js
+/graphiqlWithExtensions.css
 
 .merlin
 lib/

@@ -15,6 +15,7 @@
     "dist",
     "graphiqlWithExtensions.js",
     "graphiqlWithExtensions.min.js",
+    "graphiqlWithExtensions.css",
     "README.md",
     "LICENSE"
   ],

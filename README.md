@@ -41,6 +41,11 @@ ReactDOM.render(
 
 Rigth now we only include the latest version of OneGraph's GraphiQL Explorer plugin. Please open an issue if you'd like to see other plugins included.
 
+# Usage without build step
+
+Easiest way you can use this to create one html file with customized authentication for your backend and serve it on some url. With that setup you don't
+need to have npm or javascript ecosystem tools (if your backend is in different stack e.g. python, java, clojure). For minimal example of this approach see [static.html](examples/static.html)
+
 ## License
 
 graphiql-with-extensions is licensed under the [MIT License](http://opensource.org/licenses/MIT).<br>

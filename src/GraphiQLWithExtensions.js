@@ -1,34 +1,40 @@
 import React, {Component} from 'react';
 import GraphiQL from 'graphiql';
 import GraphiQLExplorer from 'graphiql-explorer';
+import CodeExporter from 'graphiql-code-exporter';
+import codeExporterDefaultSnippets from 'graphiql-code-exporter/lib/snippets';
 import {buildClientSchema, getIntrospectionQuery, parse} from 'graphql';
 
 class GraphiQLWithExtensions extends Component {
   _graphiql: GraphiQL;
+
   state = {
     schema: null,
     query: this.props.defaultQuery,
     explorerIsOpen: false,
     disableExplorer: this.props.disableExplorer,
+    codeExporterIsOpen: false,
+    disableCodeExporter: this.props.disableCodeExporter
   };
 
   componentDidMount() {
     this.props
-      .fetcher({
-        query: getIntrospectionQuery(),
-      })
-      .then(result => {
-        const editor = this._graphiql.getQueryEditor();
-        editor.setOption('extraKeys', {
-          ...(editor.options.extraKeys || {}),
-          'Shift-Alt-LeftClick': this._handleInspectOperation,
-        });
-
-        this.setState({schema: buildClientSchema(result.data)});
+    .fetcher({
+      query: getIntrospectionQuery(),
+    })
+    .then(result => {
+      const editor = this._graphiql.getQueryEditor();
+      editor.setOption('extraKeys', {
+        ...(editor.options.extraKeys || {}),
+        'Shift-Alt-LeftClick': this._handleInspectOperation,
       });
+
+      this.setState({schema: buildClientSchema(result.data)});
+    });
   }
 
-  _handleInspectOperation = (cm: any, mousePos: {line: Number, ch: Number}) => {
+  _handleInspectOperation = (cm: any,
+      mousePos: { line: Number, ch: Number }) => {
     let parsedQuery;
     try {
       parsedQuery = parse(this.state.query || '');
@@ -63,24 +69,24 @@ class GraphiQLWithExtensions extends Component {
 
     if (!def) {
       console.error(
-        'Unable to find definition corresponding to mouse position',
+          'Unable to find definition corresponding to mouse position',
       );
       return null;
     }
 
     var operationKind =
-      def.kind === 'OperationDefinition'
-        ? def.operation
-        : def.kind === 'FragmentDefinition'
-        ? 'fragment'
-        : 'unknown';
+        def.kind === 'OperationDefinition'
+            ? def.operation
+            : def.kind === 'FragmentDefinition'
+            ? 'fragment'
+            : 'unknown';
 
     var operationName =
-      def.kind === 'OperationDefinition' && !!def.name
-        ? def.name.value
-        : def.kind === 'FragmentDefinition' && !!def.name
-        ? def.name.value
-        : 'unknown';
+        def.kind === 'OperationDefinition' && !!def.name
+            ? def.name.value
+            : def.kind === 'FragmentDefinition' && !!def.name
+            ? def.name.value
+            : 'unknown';
 
     var selector = `.graphiql-explorer-root #${operationKind}-${operationName}`;
 
@@ -90,70 +96,103 @@ class GraphiQLWithExtensions extends Component {
 
   _handleEditQuery = (query: string): void => {
     this.setState({query});
-    if (this.props.onEditQuery) this.props.onEditQuery(query);
+    if (this.props.onEditQuery) {
+      this.props.onEditQuery(query);
+    }
   };
 
   _handleEditVariables = variables => {
-    if (this.props.onEditVariables) this.props.onEditVariables(variables);
+    if (this.props.onEditVariables) {
+      this.props.onEditVariables(variables);
+    }
   };
 
   _handleEditOperationName = operation => {
-    if (this.props.onEditOperationName)
+    if (this.props.onEditOperationName) {
       this.props.onEditOperationName(operation);
+    }
   };
 
   _handleToggleExplorer = () => {
     this.setState({explorerIsOpen: !this.state.explorerIsOpen});
   };
 
-  _handleToggleCodeExporter = () =>
-    this.setState({
-      codeExporterIsOpen: !this.state.codeExporterIsOpen,
-    });
+  _handleToggleCodeExporter = () => {
+    this.setState({codeExporterIsOpen: !this.state.codeExporterIsOpen});
+  }
 
   render() {
     const {query, schema} = this.state;
 
-    return (
-      <div className="graphiql-container">
-        {this.props.disableExplorer ? null : (
-          <GraphiQLExplorer
+    const explorer = this.props.disableExplorer ? null : (
+        <GraphiQLExplorer
             schema={schema}
             query={query}
             onEdit={this._handleEditQuery}
             explorerIsOpen={this.state.explorerIsOpen}
             onToggleExplorer={this._handleToggleExplorer}
-          />
-        )}
-        <GraphiQL
-          ref={ref => (this._graphiql = ref)}
-          fetcher={this.props.fetcher}
-          schema={schema}
-          query={query}
-          onEditQuery={this._handleEditQuery}
-          onEditVariables={this._handleEditVariables}
-          onEditOperationName={this._handleEditOperationName}>
-          <GraphiQL.Toolbar>
-            <GraphiQL.Button
-              onClick={() => this._graphiql.handlePrettifyQuery()}
-              label="Prettify"
-              title="Prettify Query (Shift-Ctrl-P)"
+        />
+    );
+
+    const codeExporter = this.props.disableCodeExporter ? null : (
+        this.state.codeExporterIsOpen ? (
+            <CodeExporter
+                hideCodeExporter={this._handleToggleCodeExporter}
+                snippets={codeExporterDefaultSnippets}
+                serverUrl={this.props.serverUrl}
+                context={{
+                  appId: this.props.appId
+                }}
+                variables={'asdf'}
+                headers={{}}
+                query={query}
+                codeMirrorTheme="tomorrow-night-bright"
             />
-            <GraphiQL.Button
-              onClick={() => this._graphiql.handleToggleHistory()}
-              label="History"
-              title="Show History"
-            />
-            {this.props.disableExplorer ? null : (
+        ) : null
+    );
+
+    return (
+        <div className="graphiql-container">
+          {explorer}
+          <GraphiQL
+              ref={ref => (this._graphiql = ref)}
+              fetcher={this.props.fetcher}
+              schema={schema}
+              query={query}
+              onEditQuery={this._handleEditQuery}
+              onEditVariables={this._handleEditVariables}
+              onEditOperationName={this._handleEditOperationName}>
+            <GraphiQL.Toolbar>
               <GraphiQL.Button
-                onClick={this._handleToggleExplorer}
-                label="Explorer"
-                title="Toggle Explorer"
+                  onClick={() => this._graphiql.handlePrettifyQuery()}
+                  label="Prettify"
+                  title="Prettify Query (Shift-Ctrl-P)"
               />
-            )}
-          </GraphiQL.Toolbar>
-        </GraphiQL>
-      </div>
+              <GraphiQL.Button
+                  onClick={() => this._graphiql.handleToggleHistory()}
+                  label="History"
+                  title="Show History"
+              />
+
+              {this.props.disableExplorer ? null : (
+                  <GraphiQL.Button
+                      onClick={this._handleToggleExplorer}
+                      label="Explorer"
+                      title="Toggle Explorer"
+                  />
+              )}
+
+              {this.props.disableCodeExporter ? null : (
+                  <GraphiQL.Button
+                      onClick={this._handleToggleCodeExporter}
+                      label="Code Exporter"
+                      title="Toggle Code Exporter"
+                  />
+              )}
+            </GraphiQL.Toolbar>
+          </GraphiQL>
+          {codeExporter}
+        </div>
     );
   }
 }

@@ -24,7 +24,11 @@ dist/
 /graphiqlWithExtensions.js
 /graphiqlWithExtensions.min.js
 /graphiqlWithExtensions.css
+/graphiqlCodeExporter.css
 
 .merlin
 lib/
 /.bsb.lock
+
+# ide
+/.idea

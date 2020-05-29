@@ -8,6 +8,7 @@ class GraphiQLWithExtensions extends Component {
   state = {
     schema: null,
     query: this.props.defaultQuery,
+    variables: this.props.variables,
     explorerIsOpen: false,
     disableExplorer: this.props.disableExplorer,
   };
@@ -112,8 +113,7 @@ class GraphiQLWithExtensions extends Component {
     });
 
   render() {
-    const {query, schema} = this.state;
-
+    const {query, schema, variables} = this.state;
     return (
       <div className="graphiql-container">
         {this.props.disableExplorer ? null : (
@@ -130,6 +130,7 @@ class GraphiQLWithExtensions extends Component {
           fetcher={this.props.fetcher}
           schema={schema}
           query={query}
+          variables={variables}
           onEditQuery={this._handleEditQuery}
           onEditVariables={this._handleEditVariables}
           onEditOperationName={this._handleEditOperationName}>

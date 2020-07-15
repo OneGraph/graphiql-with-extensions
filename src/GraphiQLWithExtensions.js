@@ -140,11 +140,9 @@ class GraphiQLWithExtensions extends Component {
                 hideCodeExporter={this._handleToggleCodeExporter}
                 snippets={codeExporterDefaultSnippets}
                 serverUrl={this.props.serverUrl}
-                context={{
-                  appId: this.props.appId
-                }}
-                variables={'asdf'}
-                headers={{}}
+                context={this.props.context}
+                variables={{}}
+                headers={this.props.headers}
                 query={query}
                 codeMirrorTheme="tomorrow-night-bright"
             />

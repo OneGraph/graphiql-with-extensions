@@ -16,6 +16,7 @@
     "graphiqlWithExtensions.js",
     "graphiqlWithExtensions.min.js",
     "graphiqlWithExtensions.css",
+    "graphiqlCodeExporter.css",
     "README.md",
     "LICENSE"
   ],
@@ -82,7 +83,8 @@
   },
   "dependencies": {
     "graphiql": "^0.14.2",
-    "graphiql-explorer": "^0.4.4",
+    "graphiql-code-exporter": "^2.0.8",
+    "graphiql-explorer": "^0.6.2",
     "graphql": "^14.5.4"
   }
 }

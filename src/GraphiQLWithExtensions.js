@@ -8,6 +8,8 @@ class GraphiQLWithExtensions extends Component {
   state = {
     schema: null,
     query: this.props.defaultQuery,
+    variables: this.props.variables,
+    operationName: this.props.operationName,
     explorerIsOpen: false,
     disableExplorer: this.props.disableExplorer,
   };
@@ -94,12 +96,14 @@ class GraphiQLWithExtensions extends Component {
   };
 
   _handleEditVariables = variables => {
+    this.setState({variables});
     if (this.props.onEditVariables) this.props.onEditVariables(variables);
   };
 
-  _handleEditOperationName = operation => {
+  _handleEditOperationName = operationName => {
+    this.setState({operationName});
     if (this.props.onEditOperationName)
-      this.props.onEditOperationName(operation);
+      this.props.onEditOperationName(operationName);
   };
 
   _handleToggleExplorer = () => {
@@ -112,7 +116,7 @@ class GraphiQLWithExtensions extends Component {
     });
 
   render() {
-    const {query, schema} = this.state;
+    const {query, schema, variables, operationName} = this.state;
 
     return (
       <div className="graphiql-container">
@@ -130,6 +134,8 @@ class GraphiQLWithExtensions extends Component {
           fetcher={this.props.fetcher}
           schema={schema}
           query={query}
+          variables={variables}
+          operationName={operationName}
           onEditQuery={this._handleEditQuery}
           onEditVariables={this._handleEditVariables}
           onEditOperationName={this._handleEditOperationName}>

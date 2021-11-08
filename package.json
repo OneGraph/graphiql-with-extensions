@@ -81,7 +81,7 @@
     "test": "npm run lint && npm run check && npm run build"
   },
   "dependencies": {
-    "graphiql": "^0.14.2",
+    "graphiql": "^1.4.7",
     "graphiql-explorer": "^0.4.4",
     "graphql": "^14.5.4"
   }

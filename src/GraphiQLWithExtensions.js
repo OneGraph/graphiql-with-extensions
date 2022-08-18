@@ -8,7 +8,7 @@ class GraphiQLWithExtensions extends Component {
   state = {
     schema: null,
     query: this.props.defaultQuery,
-    explorerIsOpen: false,
+    explorerIsOpen: this.props.explorerIsOpen,
     disableExplorer: this.props.disableExplorer,
   };
 
